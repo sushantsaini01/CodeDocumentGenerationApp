@@ -1,4 +1,4 @@
-package com.example.codedocumentgenerationapp
+package com.example.codedocumentgenerationapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
