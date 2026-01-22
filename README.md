@@ -61,3 +61,31 @@ The documentation summary effectively captures all critical aspects of the new G
 The provided documentation summary is excellent. It serves as a high-quality `README.md` entry that clearly communicates the purpose, functionality, implementation details, and significance of the new GitHub integration features. It would be highly effective for onboarding new developers, understanding recent changes, and maintaining the project.
 
 No further documentation summary is needed as the provided text already fulfills this requirement to a very high standard.
+
+---
+### Documentation Update (2026-01-22T13:37:56.844385)
+### Documentation Update (2024-XX-XX)
+
+This update refines the application's API by introducing structured responses and global error handling, and crucially lays the groundwork for integrating Large Language Models (LLMs) to enhance documentation capabilities.
+
+#### Key Enhancements:
+
+1.  **Structured Commit Response:**
+    *   The `/fetch-latest-commit` endpoint now returns a structured `CommitResponse` object instead of a plain string. This provides a more robust and easily parsable data format for clients.
+    *   A new data class, `CommitResponse`, has been introduced (using Lombok's `@Data`) to encapsulate comprehensive commit details.
+2.  **Global API Error Handling:**
+    *   A new `GlobalExceptionHandler` has been implemented. This centralizes error management, ensuring consistent and predictable error responses across all API endpoints, improving API robustness and developer experience.
+3.  **Foundation for LLM Integration:**
+    *   A new service, `LlmService`, has been introduced. This addition is a critical step towards incorporating Large Language Models (LLMs) into the application's workflow, preparing for advanced and intelligent code documentation generation.
+
+#### Technical Details:
+
+*   **`src/main/java/com/example/codedocumentgenerationapp/schema/CommitResponse.java`**: New `@Data` class defining the structured commit response payload.
+*   **`src/main/java/com/example/codedocumentgenerationapp/exception/GlobalExceptionHandler.java`**: New `@ControllerAdvice` class for application-wide exception handling.
+*   **`src/main/java/com/example/codedocumentgenerationapp/service/LlmService.java`**: New `@Service` class, a placeholder for future LLM integration logic.
+*   **`src/main/java/com/example/codedocumentgenerationapp/controller/CodeDocumentGenerationController.java`**: Modified to return the new `CommitResponse` object.
+*   **`src/main/java/com/example/codedocumentgenerationapp/service/CodeDocumentGenerationService.java`**: Updated to utilize the new `CommitResponse` structure.
+
+#### Impact:
+
+These enhancements significantly upgrade the API's usability and error handling, making it more resilient and developer-friendly. More importantly, the introduction of the `LlmService` is a pivotal step towards achieving the core objective of automated, intelligent code documentation generation by integrating advanced AI capabilities.
