@@ -23,14 +23,28 @@ public class LlmService {
     }
 
     @SuppressWarnings("unchecked")
-    public String generateWriteup(String commitDiff) {
+    public String generateWriteup(String commitDiff, String existingReadme) {
         // Truncate input to avoid hitting token limits
         String truncatedDiff = commitDiff;
         if (truncatedDiff.length() > 20000) {
             truncatedDiff = truncatedDiff.substring(0, 20000) + "\n...[TRUNCATED]...";
         }
 
-        String prompt = "Analyze the following code changes and write a documentation summary:\n\n" + truncatedDiff;
+        // Truncate existing readme to avoid token limits
+        String truncatedReadme = existingReadme;
+        if (truncatedReadme != null && truncatedReadme.length() > 50000) {
+            truncatedReadme = truncatedReadme.substring(0, 50000) + "\n...[TRUNCATED]...";
+        }
+
+        String prompt = "You are a code documentation expert.\n" +
+                "Existing README Content:\n" + truncatedReadme + "\n\n" +
+                "New Code Changes (Diff):\n" + truncatedDiff + "\n\n" +
+                "Instruction:\n" +
+                "Analyze the code changes against the existing README.\n" +
+                "1. If the existing README already covers these changes, return 'NO_UPDATE'.\n" +
+                "2. If the changes are trivial optimizations or refactoring that don't need user-facing documentation, return 'NO_UPDATE'.\n"
+                +
+                "3. Otherwise, write a concise summary of the changes to be appended to the README. Return ONLY the new content.";
 
         // Gemini Request Structure
         Map<String, Object> requestBody = Map.of(

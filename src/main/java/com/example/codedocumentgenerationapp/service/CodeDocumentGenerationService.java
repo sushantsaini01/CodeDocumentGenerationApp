@@ -34,6 +34,17 @@ public class CodeDocumentGenerationService {
                 .build();
     }
 
+    public String getReadmeContent(String owner, String repo, String token) {
+        try {
+            GitHub github = GitHub.connectUsingOAuth(token);
+            GHRepository repository = github.getRepository(owner + "/" + repo);
+            org.kohsuke.github.GHContent readme = repository.getFileContent("README.md");
+            return readme.getContent();
+        } catch (Exception e) {
+            return ""; // Return empty string if file doesn't exist or error
+        }
+    }
+
     public void updateReadme(String owner, String repo, String token, String content) throws java.io.IOException {
         GitHub github = GitHub.connectUsingOAuth(token);
         GHRepository repository = github.getRepository(owner + "/" + repo);

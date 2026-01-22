@@ -30,15 +30,23 @@ public class CodeDocumentGenerationController {
                         request.getToken());
 
         if (commitResponse.getPatch() != null && !commitResponse.getPatch().isEmpty()) {
-            String writeup = llmService.generateWriteup(commitResponse.getPatch());
-            commitResponse.setWriteup(writeup);
-
-            // Update README.md
-            codeDocumentGenerationService.updateReadme(
+            // Fetch existing README content
+            String existingReadme = codeDocumentGenerationService.getReadmeContent(
                     request.getOwner(),
                     request.getRepo(),
-                    request.getToken(),
-                    writeup);
+                    request.getToken());
+
+            String writeup = llmService.generateWriteup(commitResponse.getPatch(), existingReadme);
+            commitResponse.setWriteup(writeup);
+
+            // Update README.md only if there is content to add
+            if (!writeup.trim().equals("NO_UPDATE")) {
+                codeDocumentGenerationService.updateReadme(
+                        request.getOwner(),
+                        request.getRepo(),
+                        request.getToken(),
+                        writeup);
+            }
         }
 
         return org.springframework.http.ResponseEntity.ok(commitResponse);
