@@ -42,9 +42,12 @@ public class LlmService {
                 "Instruction:\n" +
                 "Analyze the code changes against the existing README.\n" +
                 "1. If the existing README already covers these changes, return 'NO_UPDATE'.\n" +
-                "2. If the changes are trivial optimizations or refactoring that don't need user-facing documentation, return 'NO_UPDATE'.\n"
+                "2. If the changes are trivial optimizations, refactoring, or adding comments that don't need user-facing documentation, return 'NO_UPDATE'.\n"
                 +
-                "3. Otherwise, write a concise summary of the changes to be appended to the README. Return ONLY the new content.";
+                "3. If the changes are only dependency version updates (e.g., in pom.xml or build.gradle), return 'NO_UPDATE'.\n"
+                +
+                "4. If the changes do not enhance or modify business functionality, return 'NO_UPDATE'.\n" +
+                "5. Otherwise, write a concise summary of the changes to be appended to the README. Return ONLY the new content.";
 
         // Gemini Request Structure
         Map<String, Object> requestBody = Map.of(
